@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: "nextjs-app"
+  name: "nextjs-app"
+  namespace: nextjs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "nextjs-app"
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: "nextjs-app"
+    spec:
+      containers:
+        - image: yosepk/nextjs-app:latest
+          imagePullPolicy: Always
+          name: "nextjs-app"
+          envFrom:
+          - secretRef:
+              name: builder-io-key
+          ports:
+            - containerPort: 3000
+              protocol: TCP
